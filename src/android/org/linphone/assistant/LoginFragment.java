@@ -17,6 +17,10 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONStringer;
 import org.linphone.R;
 import org.linphone.core.TransportType;
 
@@ -32,6 +36,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import java.util.concurrent.ExecutionException;
 
 public class LoginFragment extends Fragment implements OnClickListener, TextWatcher {
 	private EditText login, userid, password, domain, displayName;
@@ -65,8 +71,32 @@ public class LoginFragment extends Fragment implements OnClickListener, TextWatc
 	public void onClick(View v) {
 		int id = v.getId();
 
-		String doma = "dominio";
-		domain.setText(doma);
+		//String doma = "dominio";
+		//domain.setText(doma);
+
+		ClassConnection connection = new ClassConnection();
+		try {
+			String response = connection.execute("http://webdev.interface.ca/domainquery").get();
+			///Read json
+			JSONObject jsonObject = new JSONObject(response);
+			String domainn = jsonObject.getString("domain");
+			domain.setText(domainn);
+
+			//JSONArray jsonArray = new JSONArray (response);
+			//JSONObject jsonObject = jsonArray.getJSONObject(0);
+
+			//String domainn = jsonObject.getString("domain");
+
+			//domain.setText(domainn);
+
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
 
 		if (id == R.id.assistant_apply) {
 			if (login.getText() == null || login.length() == 0 || password.getText() == null || password.length() == 0 || domain.getText() == null || domain.length() == 0) {
