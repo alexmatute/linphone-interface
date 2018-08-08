@@ -65,6 +65,9 @@ public class LoginFragment extends Fragment implements OnClickListener, TextWatc
 	public void onClick(View v) {
 		int id = v.getId();
 
+		String doma = "dominio";
+		domain.setText(doma);
+
 		if (id == R.id.assistant_apply) {
 			if (login.getText() == null || login.length() == 0 || password.getText() == null || password.length() == 0 || domain.getText() == null || domain.length() == 0) {
 				Toast.makeText(getActivity(), getString(R.string.first_launch_no_login_password), Toast.LENGTH_LONG).show();
